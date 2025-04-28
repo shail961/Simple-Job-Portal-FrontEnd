@@ -23,6 +23,7 @@ const JobPostPage = () => {
       alert("Job posted successfully!");
       navigate("/jobs");
     } catch (err) {
+      console.log(err);
       alert("Error posting job");
     }
   };
