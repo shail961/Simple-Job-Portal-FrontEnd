@@ -13,7 +13,7 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       const res = await axios.post("/auth/login", { username, password });
-      login(res.data.token);
+      login(res.data.token, res.data.role);
       navigate("/jobs");
     } catch (err) {
       alert("Login failed. Check credentials.");

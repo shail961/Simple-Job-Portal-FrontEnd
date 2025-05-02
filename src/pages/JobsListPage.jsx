@@ -21,7 +21,7 @@ const JobsListPage = () => {
 
   return (
     <div>
-      <button onClick={handleClick}>Post Job</button>
+      {localStorage.getItem("role")==="RECRUITER" &&  <button onClick={handleClick}>Post Job</button>}
       <h2>Available Jobs</h2>
       {jobs.map(job => (
         <div key={job.id} style={{ border: "1px solid #ccc", marginBottom: "10px", padding: "10px" }} onClick={() => handleJobClick(job.id)}>
