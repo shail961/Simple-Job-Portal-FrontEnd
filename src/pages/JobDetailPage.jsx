@@ -19,6 +19,17 @@ function JobDetailPage() {
     fetchJobDetail();
   }, [jobId]);
 
+  const handleApply = async () => {
+    await axios.post(`/applications`, {jobId : jobId})
+      .then(() => {
+        setJob({ ...job, applied: true });
+        console.log(job);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
   if (!job) {
     return <div className="p-6">Loading job details...</div>;
   }
@@ -33,12 +44,14 @@ function JobDetailPage() {
         <p className="text-gray-700 mt-2">{job.description}</p>
       </div>
 
+      {job.applied===false && <button onClick={handleApply}>Apply for this Job</button>}
       <button
         onClick={() => window.history.back()}
         className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
       >
         Go Back
       </button>
+
     </div>
   );
 }
