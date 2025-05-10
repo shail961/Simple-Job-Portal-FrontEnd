@@ -29,13 +29,13 @@ instance.interceptors.response.use(
     console.log(error.response.status);
     console.log(error.response.status);
 
-    // if (
-    //   error.response.status === 403
-    // ) {
-    //   localStorage.removeItem("token"); 
-    //   localStorage.removeItem("role"); 
-    //   window.location.href = "/login"; 
-    // }
+    if (
+      error.response.status === 403
+    ) {
+      localStorage.removeItem("token"); 
+      localStorage.removeItem("role"); 
+      window.location.href = "/login"; 
+    }
 
   return Promise.reject(error)
   })

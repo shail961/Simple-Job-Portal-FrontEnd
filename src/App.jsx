@@ -6,6 +6,7 @@ import JobPostPage from "./pages/JobPostPage";
 import JobDetailPage from "./pages/JobDetailPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ApplicationsReviewPage from "./pages/ApplicationsReviewPage";
+import MyApplicationPage from "./pages/MyApplicationsPage";
 import { AuthProvider } from "./context/AuthContext";
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from "./context/AuthContext";
@@ -44,6 +45,7 @@ function App() {
           <Route path="/jobs" element={<JobsListPage />} />
           <Route path="/jobs/:jobId" element={<JobDetailPage />} />
           <Route path="/applications" element={<ApplicationsReviewPage />} />
+          <Route path="/myapplications" element={<MyApplicationPage />} />
           <Route
             path="/post-job"
             element={

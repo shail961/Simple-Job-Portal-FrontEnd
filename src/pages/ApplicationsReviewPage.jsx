@@ -8,7 +8,6 @@ const ApplicationsReviewPage = () => {
 
   const fetchApplications = async () => {
     try {
-      const token = localStorage.getItem("token");
       const response = await axios.get("/applications/my-posted-jobs");
       setApplications(response.data);
     } catch (err) {
@@ -25,7 +24,6 @@ const ApplicationsReviewPage = () => {
 
   const updateStatus = async (applicationId, newStatus) => {
     try {
-        const token = localStorage.getItem("token");
       await axios.put(`/applications/${applicationId}?status=${newStatus}`);
       fetchApplications(); // Refresh the list
     } catch (err) {
