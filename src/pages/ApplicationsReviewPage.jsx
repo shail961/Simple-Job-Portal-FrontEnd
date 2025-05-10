@@ -18,6 +18,23 @@ const ApplicationsReviewPage = () => {
     }
   };
 
+  const handleViewResume = (app) => {
+        axios
+        .get(`/applications/${app.id}/resume`, {
+          responseType: "blob", 
+        })
+        .then((res) => {
+          const blob = new Blob([res.data], { type: "application/pdf" });
+          const url = URL.createObjectURL(blob);
+          window.open(url, "_blank");
+        })
+        .catch((err) => {
+          console.error("Error viewing resume", err);
+          alert("Unable to load resume.");
+        });
+      
+  };
+
   useEffect(() => {
     fetchApplications();
   }, []);
@@ -47,6 +64,7 @@ const ApplicationsReviewPage = () => {
               <th className="text-left py-2 px-4 border-b">Job Title</th>
               <th className="text-left py-2 px-4 border-b">Candidate Email</th>
               <th className="text-left py-2 px-4 border-b">Status</th>
+              <th className="text-left py-2 px-4 border-b">Resume</th>
               <th className="text-left py-2 px-4 border-b">Actions</th>
             </tr>
           </thead>
@@ -56,6 +74,9 @@ const ApplicationsReviewPage = () => {
                 <td className="py-2 px-4 border-b">{app.job.title}</td>
                 <td className="py-2 px-4 border-b">{app.applicant.email}</td>
                 <td className="py-2 px-4 border-b capitalize">{app.status}</td>
+                <td className="py-2 px-4 border-b">
+                   <> <button onClick={() => handleViewResume(app)}>View Resume</button></>
+                </td>
                 <td className="py-2 px-4 border-b space-x-2">
                 {app.status === "PENDING" ? (
                         <>

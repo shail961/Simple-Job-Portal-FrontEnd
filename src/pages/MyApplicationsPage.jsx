@@ -24,6 +24,23 @@ const MyApplicationPage = () => {
   if (loading) return <div className="p-4">Loading applications...</div>;
   if (error) return <div className="p-4 text-red-500">{error}</div>;
 
+  const handleViewResume = (app) => {
+    axios
+    .get(`/applications/${app.id}/resume`, {
+      responseType: "blob", 
+    })
+    .then((res) => {
+      const blob = new Blob([res.data], { type: "application/pdf" });
+      const url = URL.createObjectURL(blob);
+      window.open(url, "_blank");
+    })
+    .catch((err) => {
+      console.error("Error viewing resume", err);
+      alert("Unable to load resume.");
+    });
+  
+};
+
   return (
     <div className="max-w-4xl mx-auto p-4">
       <h2 className="text-2xl font-bold mb-4">Your Applications and their status</h2>
@@ -35,6 +52,7 @@ const MyApplicationPage = () => {
             <tr>
               <th className="text-left py-2 px-4 border-b">Job Title</th>
               <th className="text-left py-2 px-4 border-b">Status</th>
+              <th className="text-left py-2 px-4 border-b">Submitted Resume</th>
             </tr>
           </thead>
           <tbody>
@@ -42,6 +60,9 @@ const MyApplicationPage = () => {
               <tr key={app.id}>
                 <td className="py-2 px-4 border-b">{app.job.title}</td>
                 <td className="py-2 px-4 border-b capitalize">{app.status}</td>
+                <td className="py-2 px-4 border-b">
+                   <> <button onClick={() => handleViewResume(app)}>View Resume</button></>
+                </td>
               </tr>
             ))}
           </tbody>

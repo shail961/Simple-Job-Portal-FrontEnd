@@ -5,6 +5,7 @@ import axios from "../api/axios";
 function JobDetailPage() {
   const { jobId } = useParams();
   const [job, setJob] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   useEffect(() => {
     const fetchJobDetail = async () => {
@@ -19,15 +20,35 @@ function JobDetailPage() {
     fetchJobDetail();
   }, [jobId]);
 
+  const handleFileChange = (e) => {
+    setSelectedFile(e.target.files[0]);
+  };
+
   const handleApply = async () => {
-    await axios.post(`/applications`, {jobId : jobId})
-      .then(() => {
+
+    if (!selectedFile) {
+      alert("Please select a resume file before applying.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("jobId", jobId);
+    formData.append("resume", selectedFile);
+
+
+    await axios.post(`/applications`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer `,
+      },
+    }).then(() => {
         setJob({ ...job, applied: true });
-        console.log(job);
+        alert("Application submitted successfully.");
       })
       .catch((err) => {
         console.error(err);
       });
+
   };
 
   if (!job) {
@@ -44,7 +65,12 @@ function JobDetailPage() {
         <p className="text-gray-700 mt-2">{job.description}</p>
       </div>
 
-      {job.applied===false && <button onClick={handleApply}>Apply for this Job</button>}
+      {job.applied===false &&
+       <div>
+       <input type="file" accept=".pdf" onChange={handleFileChange} />
+       <button onClick={handleApply}>Apply with Resume</button>
+     </div>
+       }
       <button
         onClick={() => window.history.back()}
         className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
